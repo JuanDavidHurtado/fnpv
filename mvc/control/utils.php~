@@ -1,0 +1,1083 @@
+<?php
+
+/**
+ * Clase estatica con metodos y configuracion general del sistema
+ *
+ * @author RODRIGUEZ
+ */
+class Utils {
+
+//variables generales
+    public static $acc_app = array('421aa90e079fa326b6494f812ad13e79','18ef1db49e789cf6d6fab4663bd7b8e4','a541dddab6cb3ad680053f55559ad394','a4af554ffcce546c8548738cd3a9350e');
+    public static $_server_type = false; //true is server linux, false is server windows
+    public static $http_ruta = "http://190.146.87.72/siempree/";
+    private static $folder_proyect_name = "siempree/";
+    public static $server = "localhost";
+    public static $user_name = "root";
+    public static $user_name_password = "siempree2014";
+    public static $database = "sids_siempre_db";
+    public static $google_key = "ABQIAAAA8a8P_YYTFTFvuRVTURoPGxStrx_qlMhyHdju3ps3O3fGSOsJlRSF3WiDom8bpUIyfXIUpsrL_6R3cQ";
+    public static $theme = "hot-sneaks";
+    public static $email_remit = "tavoz.q@gmail.com";
+    public static $email_password = "";
+    public static $feed_principal = "http://feeds.feedburner.com/SenaRegionalDC";
+    public static $welcome_label = "Bienvenido a SIDS ";
+    public static $name_company = "S.I.D.S";
+//links
+    public static $link_facebook = "http://www.facebook.com/";
+    public static $link_twitter = "http://twitter.com/#!/";
+    public static $link_youtube = "http://youtube.com";
+//foders
+    public static $dir_recursos = "resources/";
+    public static $dir_archivos = "archivos/";
+    public static $dir_fclient = "client/";
+    public static $dir_dominios = "domains/";
+    public static $dir_home = "_home/";
+    public static $dir_admin = "_admin/";
+    public static $dir_gerente = "_manager/";
+    public static $dir_cajero = "_cashier/";
+    public static $dir_cliente = "_client/";
+    public static $dir_thumbnail_themes = "resources/images/";
+//imagenes de recurso
+    private static $header = "header.png";
+    private static $background = "fondo.png";
+    private static $favicon = "favicon.ico";
+    private static $piepagina = "piepagina.png";
+    private static $icon_editar = "editar.png";
+    private static $icon_eliminar = "editar.png";
+    private static $icon_agregar = "editar.png";
+    private static $icon_usuarios = "user.png";
+    private static $icon_cuentas = "cuenta.png";
+    //---stmp gmail
+    public static $_mailSMTPHost = "ssl://smtp.gmail.com";
+    public static $_mailSMTPPort = 465;
+    public static $_mailUser = "tavoz.q@gmail.com";
+    public static $_mailPassword = "";
+    public static $_mailFromName = "Server Rodriguez";
+    //---localhos
+    public static $_mailLocalHost = "localhost";
+    public static $_mailLocalUser = "txvoz@localhost";
+    public static $_mailLocalFromName = "Server Rodriguez";
+    //---aplicacion
+    public static $_horas_limite_cita = 48;
+
+    //Configuracion de server
+    public static function getFtpRuta() {
+        if (Utils::$_server_type) {
+            $ruta = "/home/" . Utils::$folder_proyect_name;
+        } else {
+            $ruta = $_SERVER['DOCUMENT_ROOT'] . '/' . Utils::$folder_proyect_name;
+        }
+        return $ruta;
+    }
+
+    public static function http_ruta() {
+        return "http://" . $_SERVER["SERVER_NAME"] . "/siempree/";
+    }
+
+    public static function getWebService() {
+        return Utils::http_ruta() . "web_services/redbancariaservices.php?wsdl";
+    }
+
+    public static function getWebServiceJSON() {
+        return Utils::$http_ruta . "";
+    }
+
+    public static function getImgHeader($acces = true) {
+        if ($acces) {
+            return Utils::http_ruta() . Utils::$dir_recursos . Utils::$header;
+        } else {
+            return Utils::getFtpRuta() . Utils::$dir_recursos . Utils::$header;
+        }
+    }
+
+    public static function getImgBackGround($acces = true) {
+        if ($acces) {
+            return Utils::$http_ruta . Utils::$dir_recursos . Utils::$background;
+        } else {
+            return Utils::getFtpRuta() . Utils::$dir_recursos . Utils::$background;
+        }
+    }
+
+    public static function getImgFavicon($acces = true) {
+        if ($acces) {
+            return Utils::$http_ruta . Utils::$dir_recursos . Utils::$favicon;
+        } else {
+            return Utils::getFtpRuta() . Utils::$dir_recursos . Utils::$favicon;
+        }
+    }
+
+    public static function getImgPiePagina($acces = true) {
+        if ($acces) {
+            return Utils::$http_ruta . Utils::$dir_recursos . Utils::$piepagina;
+        } else {
+            return Utils::getFtpRuta() . Utils::$dir_recursos . Utils::$piepagina;
+        }
+    }
+
+    public static function getImgEditar($acces = true) {
+        if ($acces) {
+            return Utils::$http_ruta . "";
+        } else {
+            return Utils::getFtpRuta() . "";
+        }
+    }
+
+    public static function getImgEliminar($acces = true) {
+        if ($acces) {
+            return Utils::$http_ruta . "";
+        } else {
+            return Utils::getFtpRuta() . "";
+        }
+    }
+
+    public static function getImgAgregar($acces = true) {
+        if ($acces) {
+            return Utils::$http_ruta . "";
+        } else {
+            return Utils::getFtpRuta() . "";
+        }
+    }
+
+    public static function getImgUsuarios($acces = true) {
+        if ($acces) {
+            return Utils::$http_ruta . "";
+        } else {
+            return Utils::getFtpRuta() . "";
+        }
+    }
+
+    public static function getImgCuentas($acces = true) {
+        if ($acces) {
+            return Utils::$http_ruta . "";
+        } else {
+            return Utils::getFtpRuta() . "";
+        }
+    }
+
+//Funciones estaticas del sistema
+
+    public static function generateNameRandom() {
+        mt_srand((double) microtime() * 1000000);
+        $_hass = mt_rand(100000, 999999);
+        $_nombreTemporal = substr(md5($_hass), 6, 26);
+        return $_nombreTemporal;
+    }
+
+    public static function genera_password($longitud, $tipo = "alfanumerico") {
+
+        if ($tipo == "alfanumerico") {
+            $exp_reg = "[^A-Z0-9]";
+        } elseif ($tipo == "numerico") {
+            $exp_reg = "[^0-9]";
+        }
+
+        return substr(eregi_replace($exp_reg, "", md5(rand())) .
+                eregi_replace($exp_reg, "", md5(rand())) .
+                eregi_replace($exp_reg, "", md5(rand())), 0, $longitud);
+    }
+
+    public static function move_to($origen, $destino) {
+        if (file_exists($origen)) {
+            copy($origen, $destino);
+            unlink($origen);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function delete_file($file_url) {
+        if (file_exists($file_url)) {
+            unlink($file_url);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function file_exist($file_url) {
+        if (file_exists($file_url)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function remplace_slace($string) {
+        $return = "";
+        if (is_string($string)) {
+            $return = str_replace("\r", " ", str_replace("\n", " ", $string));
+        }
+        return $return;
+    }
+
+    public static function stripAccents($String) {
+        $String = str_replace(array('á', 'à', 'â', 'ã', 'ª', 'ä'), "a", $String);
+        $String = str_replace(array('Á', 'À', 'Â', 'Ã', 'Ä'), "A", $String);
+        $String = str_replace(array('Í', 'Ì', 'Î', 'Ï'), "I", $String);
+        $String = str_replace(array('í', 'ì', 'î', 'ï'), "i", $String);
+        $String = str_replace(array('é', 'è', 'ê', 'ë'), "e", $String);
+        $String = str_replace(array('É', 'È', 'Ê', 'Ë'), "E", $String);
+        $String = str_replace(array('ó', 'ò', 'ô', 'õ', 'ö', 'º'), "o", $String);
+        $String = str_replace(array('Ó', 'Ò', 'Ô', 'Õ', 'Ö'), "O", $String);
+        $String = str_replace(array('ú', 'ù', 'û', 'ü'), "u", $String);
+        $String = str_replace(array('Ú', 'Ù', 'Û', 'Ü'), "U", $String);
+        $String = str_replace(array('[', '^', '´', '`', '¨', '~', ']'), "", $String);
+        $String = str_replace("ç", "c", $String);
+        $String = str_replace("Ç", "C", $String);
+        $String = str_replace("ñ", "n", $String);
+        $String = str_replace("Ñ", "N", $String);
+        $String = str_replace("Ý", "Y", $String);
+        $String = str_replace("ý", "y", $String);
+        return $String;
+    }
+
+    public static function compareDate($fecha1, $fecha2) {
+        $f1 = strtotime($fecha1);
+        ;
+        $f2 = strtotime($fecha2);
+        if ($f1 == $f2) {
+            $dif = 0;
+        } else if ($f1 > $f2) {
+            $dif = 1;
+        } else if ($f1 < $f2) {
+            $dif = -1;
+        }
+        return ($dif);
+    }
+
+    public static function getCountDays($fecha1, $fecha2) {
+//defino fecha 1
+        $ano1 = date("Y", strtotime($fecha1));
+        $mes1 = date("m", strtotime($fecha1));
+        $dia1 = date("d", strtotime($fecha1));
+
+//defino fecha 2
+        $ano2 = date("Y", strtotime($fecha2));
+        $mes2 = date("m", strtotime($fecha2));
+        $dia2 = date("d", strtotime($fecha2));
+
+//calculo timestam de las dos fechas
+        $timestamp1 = mktime(0, 0, 0, $mes1, $dia1, $ano1);
+        $timestamp2 = mktime(4, 12, 0, $mes2, $dia2, $ano2);
+
+//resto a una fecha la otra
+        $segundos_diferencia = $timestamp1 - $timestamp2;
+//echo $segundos_diferencia;
+//convierto segundos en días
+        $dias_diferencia = $segundos_diferencia / (60 * 60 * 24);
+
+//obtengo el valor absoulto de los días (quito el posible signo negativo)
+        $dias_diferencia = abs($dias_diferencia);
+
+//quito los decimales a los días de diferencia
+        $dias_diferencia = floor($dias_diferencia);
+
+        return $dias_diferencia;
+    }
+
+    public static function getCountHours($fecha_hora1, $fecha_hora2) {
+
+        if ($fecha_hora2 > $fecha_hora1) {
+            $fecha1 = $fecha_hora1;
+            $fecha2 = $fecha_hora2;
+        } else {
+            $fecha1 = $fecha_hora2;
+            $fecha2 = $fecha_hora1;
+        }
+
+        //defino fecha 1
+        $hora1 = date("H", strtotime($fecha1));
+        $minutos1 = date("i", strtotime($fecha1));
+        $segundos1 = date("s", strtotime($fecha1));
+        $mes1 = date("m", strtotime($fecha1));
+        $dia1 = date("d", strtotime($fecha1));
+        $anyo1 = date("Y", strtotime($fecha1));
+        //defino fecha 2
+        $hora2 = date("H", strtotime($fecha2));
+        $minutos2 = date("i", strtotime($fecha2));
+        $segundos2 = date("s", strtotime($fecha2));
+        $mes2 = date("m", strtotime($fecha2));
+        $dia2 = date("d", strtotime($fecha2));
+        $anyo2 = date("Y", strtotime($fecha2));
+        //**************************************
+        // Primero pasas las dos fechas, a formato timestamp, con mktime()
+        $fecha1 = mktime($hora1, $minutos1, $segundos1, $mes1, $dia1, $anyo1);
+        $fecha2 = mktime($hora2, $minutos2, $segundos2, $mes2, $dia2, $anyo2);
+
+        // Ahora tienes que restar las dos fechas, y así saber cuántos segundos han pasado de una fecha a otra
+        $segundos = $fecha2 - $fecha1;
+
+        // Ahora pasas de segundos, a horas
+        $horas = $segundos / 60 / 60;
+
+        $horas = round($horas);
+
+        return $horas;
+    }
+
+    public static function getCountHours2($fecha_hora1, $fecha_hora2) {
+
+        if ($fecha_hora2 > $fecha_hora1) {
+            $fecha1 = $fecha_hora1;
+            $fecha2 = $fecha_hora2;
+        } else {
+            $fecha1 = $fecha_hora2;
+            $fecha2 = $fecha_hora1;
+        }
+
+        $dias = Utils::getCountDays($fecha1, $fecha2);
+        $dias_horas = intval($dias) * 24;
+        //defino fecha 1
+        $hora1 = date("H", strtotime($fecha1));
+        //defino fecha 2
+        $hora2 = date("H", strtotime($fecha2));
+        //**************************************
+        $diff_h = intval($hora1) - intval($hora2);
+        $diff_h = $diff_h < 0 ? $diff_h * -1 : $diff_h;
+        //**************************************
+        $horas = $dias_horas + $diff_h;
+        //**************************************
+        // Primero pasas las dos fechas, a formato timestamp, con mktime()
+        $fecha1 = mktime($_POST['hora1'], $_POST['minutos1'], $_POST['segundos1'], $_POST['mes1'], $_POST['dia1'], $_POST['anyo1']);
+        $fecha2 = mktime($_POST['hora2'], $_POST['minutos2'], $_POST['segundos2'], $_POST['mes2'], $_POST['dia2'], $_POST['anyo2']);
+
+        // Ahora tienes que restar las dos fechas, y así saber cuántos segundos han pasado de una fecha a otra
+        $segundos = $fecha2 - $fecha1;
+
+        // Ahora pasas de segundos, a horas
+        $horas = $segundos / 60 / 60;
+
+        return $horas;
+    }
+
+    public static function addIntervalDate($fecha, $interval, $value) {
+        $date = date("Y-m-d", strtotime("$fecha $interval $value"));
+        return $date;
+    }
+
+    public static function addIntervalDateHours($fecha, $interval, $value) {
+        $date = date("Y-m-d H:i:s", strtotime("$fecha $interval $value"));
+        return $date;
+    }
+
+    public static function get_facebook_cookie() {
+        $app_id = Utils::get_FacebookIDApp();
+        $app_secret = Utils::get_FecebookSecrectApp();
+        $args = array();
+        parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
+        ksort($args);
+        $payload = '';
+        foreach ($args as $key => $value) {
+            if ($key != 'sig') {
+                $payload .= $key . '=' . $value;
+            }
+        }
+        if (md5($payload . $app_secret) != $args['sig']) {
+            return null;
+        }
+        return $args;
+    }
+
+    public static function get_access_token_facebook_js() {
+        $return = '
+            <!-- jsfacebook -->
+            <script  src="http://connect.facebook.net/es_ES/all.js"></script>
+            <div id="fb-root"></div>
+            <script>
+            FB.init({
+                appId: "' . Utils::get_FacebookIDApp() . '",
+                status: true,
+                cookie: true,
+                xfbml: true
+            });
+
+            FB.Event.subscribe("auth.login", function(response) {
+               // alert("reload");
+                window.location.reload();
+            });
+            </script>';
+
+        $item_return = new Item($return, '', '');
+
+        return $item_return;
+    }
+
+    public static function img_user_facebook($id_user) {
+        $return = 'https://graph.facebook.com/' . $id_user . '/picture';
+        return $return;
+    }
+
+    public static function html2rgb($color) {
+        if ($color[0] == '#')
+            $color = substr($color, 1); if (strlen($color) == 6)
+            list($r, $g, $b) = array($color[0] . $color[1], $color[2] . $color[3], $color[4] . $color[5]); elseif (strlen($color) == 3)
+            list($r, $g, $b) = array($color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2]);
+        else
+            return false; $r = hexdec($r);
+        $g = hexdec($g);
+        $b = hexdec($b);
+        return array($r, $g, $b);
+    }
+
+    public static function getMailIMG() {
+        return Utils::getImgHeader(false);
+    }
+
+    public static function getFechas($hta, $dm, $nefro) {
+        $fecha_1 = "";
+        $fecha_2 = "";
+        $fecha_3 = "";
+
+
+        if ($hta == 'A' && $dm == '0' && $nefro == '0') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'A' && $dm == 'B' && $nefro == '0') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'A' && $dm == 'M' && $nefro == '0') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'A' && $dm == 'A' && $nefro == '0') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'A' && $dm == '0' && $nefro == '1') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'A' && $dm == '0' && $nefro == '2') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'A' && $dm == '0' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'A' && $dm == '0' && $nefro == '4') {
+            $fecha_1 = "3";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'A' && $dm == 'B' && $nefro == '1') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'A' && $dm == 'M' && $nefro == '1') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'A' && $dm == 'A' && $nefro == '1') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'A' && $dm == 'B' && $nefro == '2') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'A' && $dm == 'M' && $nefro == '2') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'A' && $dm == 'A' && $nefro == '2') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'A' && $dm == 'B' && $nefro == '3') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'A' && $dm == 'M' && $nefro == '3') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'A' && $dm == 'A' && $nefro == '3') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'A' && $dm == 'B' && $nefro == '4') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'A' && $dm == 'M' && $nefro == '4') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'A' && $dm == 'A' && $nefro == '4') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'B' && $dm == '0' && $nefro == '0') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "CM";
+        } else if ($hta == 'B' && $dm == 'B' && $nefro == '0') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "CM";
+        } else if ($hta == 'B' && $dm == 'M' && $nefro == '0') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "CM";
+        } else if ($hta == 'B' && $dm == 'A' && $nefro == '0') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'B' && $dm == '0' && $nefro == '1') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'B' && $dm == '0' && $nefro == '2') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'B' && $dm == '0' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'B' && $dm == '0' && $nefro == '4') {
+            $fecha_1 = "3";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'B' && $dm == 'B' && $nefro == '1') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'B' && $dm == 'M' && $nefro == '1') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'B' && $dm == 'A' && $nefro == '1') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'B' && $dm == 'B' && $nefro == '2') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'B' && $dm == 'M' && $nefro == '2') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'B' && $dm == 'A' && $nefro == '2') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'B' && $dm == 'B' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'B' && $dm == 'M' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'B' && $dm == 'A' && $nefro == '3') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'B' && $dm == 'B' && $nefro == '4') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'B' && $dm == 'M' && $nefro == '4') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'B' && $dm == 'A' && $nefro == '4') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'M' && $dm == '0' && $nefro == '0') {
+            $fecha_1 = "4";
+            $fecha_2 = "4";
+            $fecha_3 = "CM";
+        } else if ($hta == 'M' && $dm == 'B' && $nefro == '0') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "CM";
+        } else if ($hta == 'M' && $dm == 'M' && $nefro == '0') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "CM";
+        } else if ($hta == 'M' && $dm == 'A' && $nefro == '0') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'M' && $dm == '0' && $nefro == '1') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'M' && $dm == '0' && $nefro == '2') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'M' && $dm == '0' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'M' && $dm == '0' && $nefro == '4') {
+            $fecha_1 = "3";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'M' && $dm == 'B' && $nefro == '1') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'M' && $dm == 'M' && $nefro == '1') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'M' && $dm == 'A' && $nefro == '1') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'M' && $dm == 'B' && $nefro == '2') {
+            $fecha_1 = "3";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'M' && $dm == 'M' && $nefro == '2') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'M' && $dm == 'A' && $nefro == '2') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'M' && $dm == 'B' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'M' && $dm == 'M' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'M' && $dm == 'A' && $nefro == '3') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'M' && $dm == 'B' && $nefro == '4') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'M' && $dm == 'M' && $nefro == '4') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == 'M' && $dm == 'A' && $nefro == '4') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == '0' && $dm == 'B' && $nefro == '0') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "CM";
+        } else if ($hta == '0' && $dm == 'M' && $nefro == '0') {
+            $fecha_1 = "4";
+            $fecha_2 = "4";
+            $fecha_3 = "CM";
+        } else if ($hta == '0' && $dm == 'A' && $nefro == '0') {
+            $fecha_1 = "1";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == '0' && $dm == '0' && $nefro == '1') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == '0' && $dm == '0' && $nefro == '2') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == '0' && $dm == '0' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == '0' && $dm == '0' && $nefro == '4') {
+            $fecha_1 = "3";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == '0' && $dm == 'B' && $nefro == '1') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == '0' && $dm == 'B' && $nefro == '2') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == '0' && $dm == 'B' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == '0' && $dm == 'B' && $nefro == '4') {
+            $fecha_1 = "3";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == '0' && $dm == 'M' && $nefro == '1') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == 'B' && $dm == 'M' && $nefro == '2') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == '0' && $dm == 'M' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == 'B' && $dm == 'M' && $nefro == '4') {
+            $fecha_1 = "3";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        } else if ($hta == '0' && $dm == 'A' && $nefro == '1') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "6";
+        } else if ($hta == '0' && $dm == 'A' && $nefro == '2') {
+            $fecha_1 = "6";
+            $fecha_2 = "6";
+            $fecha_3 = "4";
+        } else if ($hta == 'B' && $dm == 'A' && $nefro == '3') {
+            $fecha_1 = "4";
+            $fecha_2 = "6";
+            $fecha_3 = "3";
+        } else if ($hta == '0' && $dm == 'A' && $nefro == '4') {
+            $fecha_1 = "3";
+            $fecha_2 = "6";
+            $fecha_3 = "2";
+        }
+
+        return array($fecha_1, $fecha_2, $fecha_3);
+    }
+
+    public static function edad($fecha) {
+        list($anio, $mes, $dia) = explode("-", $fecha);
+        $anio_dif = date("Y") - $anio;
+        $mes_dif = date("m") - $mes;
+        $dia_dif = date("d") - $dia;
+        if ($dia_dif < 0 || $mes_dif < 0)
+            $anio_dif--;
+        return $anio_dif;
+    }
+
+    public static function check_acc() {
+        return md5($_SERVER["SERVER_NAME"]);
+    }
+
+    public static function getFooter() {
+        $string = '<strong>' . (Utils::$name_company) . '</strong> © ' . (Date('Y')) . '   |   <a href="mailto:jhonny-07@hotmail.com">jhonny-07@hotmail.com</a>   |   <a href="mailto:tavoz.q@hotmail.es">tavoz.q@hotmail.es</a>   |   <a href="?option=sitemap">Site Map</a>';
+        return $string;
+    }
+    
+    public static function limpiarCadena($valor) {
+        $valor = str_ireplace("SELECT", "", $valor);
+        $valor = str_ireplace("COPY", "", $valor);
+        $valor = str_ireplace("DELETE", "", $valor);
+        $valor = str_ireplace("DROP", "", $valor);
+        $valor = str_ireplace("DUMP", "", $valor);
+        $valor = str_ireplace(" OR ", "", $valor);
+        $valor = str_ireplace("%", "", $valor);
+        $valor = str_ireplace("LIKE", "", $valor);
+        $valor = str_ireplace("--", "", $valor);
+        $valor = str_ireplace("^", "", $valor);
+        $valor = str_ireplace("[", "", $valor);
+        $valor = str_ireplace("]", "", $valor);
+        $valor = str_ireplace("\\", "", $valor);
+        $valor = str_ireplace("!", "", $valor);
+        $valor = str_ireplace("¡", "", $valor);
+        $valor = str_ireplace("?", "", $valor);
+        $valor = str_ireplace("=", "", $valor);
+        $valor = str_ireplace("&", "", $valor);
+        $valor = str_ireplace("'", "’", $valor);
+        $valor = str_ireplace('"', "”", $valor);
+        return $valor;
+    }
+    
+     public static function getTableOdontograma() {
+
+        $js = "
+        <script>
+            var target_odontograma = '';
+            function selectOption(obj){
+                target_odontograma = $(obj).data('target');
+                $('.dselect').removeClass('dselect');
+                $(obj).addClass('dselect');
+            }
+            
+            function changeStatusDiente(obj){
+                var numero = $(obj).data('diente');
+                if(target_odontograma!=''){
+                        
+                    if(target_odontograma!='diente_falta' && target_odontograma!='diente_extraido'){
+                        var numero = $(obj).data('diente');
+                        var status = $(obj).data('status');
+                        var html = '';
+                        html += '<img class=\"diente_i\" src=\"" . Utils::$http_ruta . "mvc/vista/imagenes/'+target_odontograma+'.png\" width=\"10\" height=\"10\" >';
+                        html += '<input name=\"diente['+numero+']['+status+']\" type=\"hidden\" value=\"'+target_odontograma+'\" />';
+                        $(obj).html(html);
+                    }else{
+                        $( '.diente_'+numero ).each(function( index ) {
+                                var numero = $(this).data('diente');
+                                var status = $(this).data('status');
+                                var html = '';
+                                html += '<img class=\"diente_i\" src=\"" . Utils::$http_ruta . "mvc/vista/imagenes/'+target_odontograma+'.png\" width=\"10\" height=\"10\" >';
+                                html += '<input name=\"diente['+numero+']['+status+']\" type=\"hidden\" value=\"'+target_odontograma+'\" />';
+                                $(this).html(html);
+                         });
+                    }
+                    
+                }else{
+                    alert('Seleccione opcion');
+                }
+            }
+            
+        </script>
+        ";
+
+        $css = "
+        <style>
+        
+        .dselect{
+            border:3px solid #000;
+            border-radius:10px;
+            -webkit-border-radius:10px;
+        }
+
+        .diente select{
+            border: 0px !important;
+            background-color:transparent;
+            font-size:10px;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            height:13px;
+            width:14px;
+            position: relative;
+            font-weight: bold;
+        }
+
+        .diente{
+            position: relative;
+            border-radius:20px;
+            -webkit-border-radius:20px;
+        }
+
+        .diente, .diente tr, .diente td{
+            position: relative;
+            border-collapse:collapse;
+            border: 1px solid #000;
+            padding:0px;
+            margin:0px;
+            
+            
+        }
+
+        .diente tr{
+            position: relative;
+            height:15px;
+            padding:0px !important;
+        }
+
+        .diente td{
+            position: relative;
+            width:15px;
+            padding:0px !important;
+        }
+
+        .parteDiente{
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .noParteDiente{
+            background-color: #666;
+        }
+
+        .parteDiente select{
+            cursor: pointer;
+        }
+
+        /*******************/
+        
+        img.diente_i {
+            position:relative;
+            margin:0px;
+            border:0px;
+            width:15px;
+            height:15px;
+        }
+        
+        .caries{
+            position: relative;
+            color:red !important;
+        }
+
+        .caries select{
+            color:red !important;
+        }
+        /*******************/
+        .calza_buena{
+            position: relative;
+            color:#1292b8 !important;
+            background-color:#1292b8 !important;
+        }
+
+        .calza_buena select{
+            color:#1292b8 !important;
+        }
+        /*******************/
+        .calza_mala{
+            position: relative;
+            color:red !important;
+           background-color:red !important;
+        }
+
+        .calza_mala select{
+            color:#1292b8 !important;
+        }
+
+        /*******************/
+
+        .sellante_bueno{
+            position: relative;
+            color:#1292b8 !important;
+        }
+
+        .sellante_bueno select{
+            color:#1292b8 !important;
+        }
+
+        /*******************/
+
+        .sellante_malo{
+            position: relative;
+            color:red !important;
+        }
+
+        .sellante_malo select{
+            color:red !important;
+        }
+
+        /*******************/
+
+        .diente_falta{
+            position: relative;
+        }
+
+        /*******************/
+
+        .diente_extraido{
+            position: relative;
+        }
+
+        .tabla_valores{
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+        .ddiente{
+            border-radius: 40px !important;
+            -webkit-border-radius: 40px !important;
+        }
+    </style>    
+        ";
+
+        $html = "
+        <table class='tabla_valores' border='1'>
+                <tr>
+                    <td class='caries' ><img onclick='selectOption(this)' data-target='caries' src='" . Utils::$http_ruta . "mvc/vista/imagenes/caries.png' width='17' height='17' /></td>
+                    <td>Caries</td>
+                    <td class='calza_buena'><img onclick='selectOption(this)' data-target='calza_buena' src='" . Utils::$http_ruta . "mvc/vista/imagenes/calza_buena.png' width='17' height='17' /></td>
+                    <td>Calza buena</td>
+                    <td class='calza_mala'><img onclick='selectOption(this)' data-target='calza_mala' src='" . Utils::$http_ruta . "mvc/vista/imagenes/calza_mala.png' width='17' height='17' /></td>
+                    <td>Calza mala</td>
+                    <td class='sellante_bueno'><img onclick='selectOption(this)' data-target='sellante_bueno' src='" . Utils::$http_ruta . "mvc/vista/imagenes/sellante_bueno.png' width='17' height='17' /></td>
+                    <td>Sellante bueno</td>
+                    <td class='sellante_malo'><img onclick='selectOption(this)' data-target='sellante_malo' src='" . Utils::$http_ruta . "mvc/vista/imagenes/sellante_malo.png' width='17' height='17' /></td>
+                    <td>Sellante malo</td>
+                    <td class='diente_falta'><img onclick='selectOption(this)' data-target='diente_falta' src='" . Utils::$http_ruta . "mvc/vista/imagenes/diente_falta.png' width='17' height='17' /></td>
+                    <td>Falta diente</td>
+                    <td class='diente_extraido'><img onclick='selectOption(this)' data-target='diente_extraido' src='" . Utils::$http_ruta . "mvc/vista/imagenes/diente_extraido.png' width='17' height='17' /></td>
+                    <td>Extraído</td>
+                </tr>
+            </table>    
+        ";
+
+        echo $js, $css, $html;
+    }
+
+    public static function getSelect($status, $num, $value) {
+        if ($value != '') {
+            $html .= "<img class='diente_i' src='" . Utils::$http_ruta . "mvc/vista/imagenes/{$value}.png' width='10' height='10' >";
+        } else {
+            $html .= "<img class='diente_i' src='" . Utils::$http_ruta . "mvc/vista/imagenes/nada.png' width='10' height='10' >";
+        }
+        $html .= "<input name='diente[{$num}][{$status}]' type='hidden' value='{$value}' />";
+        return $html;
+    }
+
+    public static function getDiente($num, $con) {
+
+
+
+        $val = '';
+        $sql = "SELECT estado,posicion_1,posicion_2,posicion_3,posicion_4,posicion_5 
+                        FROM `odontograma` 
+                        WHERE `historia` = '{$_REQUEST['historia']}'
+                        and `id_vinicial` = '{$_REQUEST['id_vinicial']}' 
+                        and `id_diente` = '{$num}'";
+
+        $result = $con->EjecutarQuery($sql);
+        while ($row = mysql_fetch_row($result)) {
+            $arrayVals[0] = $row[1];
+            $arrayVals[1] = $row[2];
+            $arrayVals[2] = $row[3];
+            $arrayVals[3] = $row[4];
+            $arrayVals[4] = $row[5];
+        }
+
+        $html = "
+       <div class='content_diente'>
+        <center><label>{$num}</label></center>
+       
+        <div class='ddiente' id='diente_{$num}' >
+       <table class='diente'>
+            <tr>
+                <td class='noParteDiente'><img class='diente_i' src='" . Utils::$http_ruta . "mvc/vista/imagenes/no_valido.png' width='10' height='10' ></td>
+                <td data-diente='{$num}' data-status='1' class='diente_{$num} parteDiente {$arrayVals[0]}' onclick='changeStatusDiente(this)'> 
+                    " . Utils::getSelect(1, $num, $arrayVals[0]) . "
+                </td>
+                <td class='noParteDiente'><img class='diente_i' src='" . Utils::$http_ruta . "mvc/vista/imagenes/no_valido.png' width='10' height='10' ></td>
+            </tr>
+            <tr >
+                <td data-diente='{$num}' data-status='2' class='diente_{$num} parteDiente {$arrayVals[1]}' onclick='changeStatusDiente(this)'> 
+                    " . Utils::getSelect(2, $num, $arrayVals[1]) . "
+                </td>
+                <td data-diente='{$num}' data-status='3' class='diente_{$num} parteDiente {$arrayVals[2]}' onclick='changeStatusDiente(this)'>
+                    " . Utils::getSelect(3, $num, $arrayVals[2]) . "
+                </td>
+                <td data-diente='{$num}' data-status='4' class='diente_{$num} parteDiente {$arrayVals[3]}' onclick='changeStatusDiente(this)'> 
+                    " . Utils::getSelect(4, $num, $arrayVals[3]) . "
+                </td>
+            </tr>
+            <tr >
+                <td class='noParteDiente'><img class='diente_i' src='" . Utils::$http_ruta . "mvc/vista/imagenes/no_valido.png' width='10' height='10' ></td>
+                <td data-diente='{$num}' data-status='5' class='diente_{$num} parteDiente {$arrayVals[4]}' onclick='changeStatusDiente(this)'> 
+                    " . Utils::getSelect(5, $num, $arrayVals[4]) . "
+                </td>
+                <td class='noParteDiente'><img class='diente_i' src='" . Utils::$http_ruta . "mvc/vista/imagenes/no_valido.png' width='10' height='10' ></td>
+            </tr>
+        </table>
+        </div>
+    </div> 
+    ";
+
+        echo $html;
+    }
+
+
+}
+
+?>

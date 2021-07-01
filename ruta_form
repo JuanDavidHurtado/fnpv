@@ -1,0 +1,22 @@
+Donde crear los nuevos forms
+http://localhost/siempree/mvc/test/show_form_app.php
+
+
+--> Registro
+
+id_proceso
+id_usuario -> cambiar $_SESSION
+historia
+id_vinicial
+id_revaloracion
+
+--> Update 
+
+quitar 
+
+id_usuario
+historia
+
+
+--> poner nuevos formularios
+/mvc/vista/terapeuta/datos_historia.php

@@ -1,0 +1,8 @@
+.ui-multiselect { height:25px; max-width: 167px; overflow-x:hidden; padding:2px 0 2px 4px; text-align:left; font-size:12px }
+.ui-multiselect-header {font-size: 12px}
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a {
+    font-size: 12px;
+}
+.ui-multiselect-checkboxes label {
+    font-size: 12px;
+}

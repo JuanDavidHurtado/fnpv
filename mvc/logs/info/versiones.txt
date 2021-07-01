@@ -1,0 +1,17 @@
+02/02/2013 00:21
+- Se agrega delimitador de 48h de tiempo para cancelar las citas.
+- Se agrega delimitador de 48h de tiempo en la tarea automatica para cancelacion de citas con procesos
+    activos.
+- Se agrega la opcion de insertar enfermedades en el dialogo.
+- Uso de licencia
+
+06/02/2013 11:51
+- Se agrega fucionalidad para que los antecedentes puedan modificarse desde la cita que se crearon
+- Se agrega id de cita en la valoracion inicial
+- Se agrega form para antecedentes odontologicos, se agrega campo en tabla paciente
+- Se agrega form para antecedentes de desarrollo motor.
+
+09/02/2013 11:25
+- Formulario antecedentes terapeuticos
+- Formulario antecedenes escolares
+- Implemetacion de tablas en la base de datos

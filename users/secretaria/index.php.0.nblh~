@@ -1,0 +1,205 @@
+<?php
+session_start();
+
+$GLOBALS['raiz'] = '../../';
+
+$bool_enter = true;
+if(isset($_SESSION['id_usuario'])){
+    if($_SESSION['rol']!='AUXILIAR'){
+        $bool_enter = false;
+    }
+}else{
+    $bool_enter = false;
+}
+
+if(!$bool_enter){
+    header ('location: ../../?option=logout');
+    exit;
+}
+
+if (isset($_REQUEST['option'])) {
+    switch ($_REQUEST['option']) {
+        case "ver_paciente":
+            $include = ("../../mvc/vista/admin/new_paciente.php");
+            $style_paciente = "foco_menu";
+            break;
+        case "listar_paciente":
+            $include = ("../../mvc/vista/admin/list_paciente.php");
+            $style_paciente = "foco_menu";
+            break;
+        case "reg_agenda":
+            $include = ("../../mvc/vista/secretaria/add_agenda.php");
+            $style_agenda = "foco_menu";
+            break;
+        case "agenda":
+            $include = ("../../mvc/vista/secretaria/agenda.php");
+            $style_agenda = "foco_menu";
+            break;
+        case "perfil":
+            $include = ("../../mvc/vista/principal/perfil.php");
+            $style_perfil = "foco_menu";
+            break;
+        case "user":
+            $include = ("../../mvc/vista/admin/control_p.php");
+            break;
+        case "cntrl_p":
+	    $style_p = "foco_menu";
+	    $include = ("../../mvc/vista/admin/control_paciente.php");
+	break;
+	case "cntrl_p":
+	    $style_p = "foco_menu";
+	    $include = ("../../mvc/vista/admin/control_paciente.php");
+	break;
+        default :
+            header('location: index.php');
+            break;
+    }
+} else {
+    $style_h = "foco_menu";
+    $include = ("../../mvc/vista/principal/home.php");
+}
+
+ include ($raiz."mvc/control/utils.php");
+ include ($raiz."mvc/persistencia/conexion.php");
+        
+ $conexion = new Conexion();
+
+?>
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <link rel="stylesheet" href="../../include/jquery_ui2/themes/cupertino/jquery-ui-1.8.18.custom.css"  type="text/css"/>
+        <link rel="stylesheet" href="../../include/jquery_ui2/demos/demos.css"  type="text/css"/>
+        <script type="text/javascript" src="../../include/js/jquery-1.4.4.js"></script>
+        <script type="text/javascript" src="../../include/js/jquery.validate.min.js"></script>
+        
+        <!-- complementos jquery ui para los tabs -->
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.core.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.mouse.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.tabs.js"></script>
+        <!--  sortable -->
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.sortable.js"></script>
+        <!--  button -->
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.button.js"></script>
+        <!-- menu -->
+        <script type="text/javascript" src="../../include/jquery_ui2/src/jquery-ui.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/src/jquery-xqs-flyoutMenu.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/src/jquery-xqs-menubar.js"></script>
+        <!-- drotable-->
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.position.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.draggable.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.droppable.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.resizable.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/jquery.ui.dialog.js"></script>
+        <!-- multiselect -->
+        <link  type="text/css" href="../../include/jquery_ui2/css/jquery.multiselect.css" rel="stylesheet" />
+        <script type="text/javascript" src="../../include/jquery_ui2/ui/minified/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/src/jquery.multiselect.js"></script>
+        <script type="text/javascript" src="../../include/jquery_ui2/src/jquery.multiselect.filter.js"></script>
+
+        <!-- Estilo local -->
+        <link  type="text/css" href="<?php echo $GLOBALS['raiz'] ?>mvc/vista/css.css" rel="stylesheet" />
+        <link id="page_favicon" href="<?php echo $GLOBALS['raiz'] ?>mvc/vista/imagenes/favicon.ico" rel="icon" type="image/x-icon" />
+        <title>Fisio Salud del Cauca</title>
+        
+              
+        
+        <script>
+        
+            $(function(){
+                $("button").button();
+               
+            })
+       
+        </script>
+    </head>
+    <body>
+        <div id="extra">
+            <div id="head">
+
+                <div id="slogan_header">
+                    <div id="content_">
+                        <div id="welcome">
+                            <?php echo $_SESSION['rol'] ?>  |  <?php echo $_SESSION['nombre']." ".$_SESSION['apellido'] ?>
+                        </div>
+
+                        <div id="login"><a href="../../?option=logout">Logout</a></div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="content">
+
+                <div id="content_menu">
+                    <a href="?option=home"><div id="logo"></div></a>    
+                    <div id="nav_prin">
+                        <ul id="menu">
+                            <li class="li_line <?php echo $style_h ?>">
+                                <a class="ali" href="?option=home">Home</a>
+                            </li> 
+                            
+                             
+                            <li class="li_line <?php echo $style_paciente ?>">
+                                <a class="ali" href="#">Pacientes</a>
+                                <ul>
+                                    <li>
+                                        <a href="?option=ver_paciente">Verificar</a>
+                                    </li>
+                                    <li>
+                                        <a href="?option=listar_paciente">Listar</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                            <li class="li_line <?php echo $style_agenda ?>">
+                                <a class="ali" href="?option=agenda#">Agenda</a>
+                                 <ul>
+                                    <li>
+                                        <a href="?option=reg_agenda">Registrar</a>
+                                    </li>
+                                    <!--<li>
+                                        <a href="#">Cronograma</a>
+                                    </li>-->
+                                </ul>
+                            </li> 
+                            
+                            <li class="li_line <?php echo $style_perfil ?>">
+                                <a class="ali" href="?option=perfil">Perfil</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="midlet">
+
+                    <?php
+                    if($include!=''){
+                        include ($include);
+                    }
+                    ?>
+
+                </div>
+
+            </div>
+        </div>
+        <div id="footer">
+            <div id="content_footer">
+                <div id="slogan_footer1">
+                    <strong>Fisio Salud del Cauca</strong> © 2012  |  <a href="mailto:jhonny-07@hotmail.com">jhonny-07@hotmail.com</a>  |  <a href="mailto:tavoz.q@hotmail.es">tavoz.q@hotmail.es</a>
+                </div>
+
+                <div id="slogan_footer2">
+                    <label class="inter siguenos">Siguenos </label>
+                    <div class="icon_social facebook"></div>
+                    <div class="icon_social twitter"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
